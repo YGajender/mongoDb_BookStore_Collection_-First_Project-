@@ -31,6 +31,22 @@ export async function getOneIdBooks(req, res) {
       res.status(200).json(books);
 }
 
+export async function putOneBooks(req, res) {
+   try {
+      const updateOneBooks = await BorrowerModel.findByIdAndUpdate(
+         req.params.id,
+         req.body,
+         { new: true } 
+      );
+      if (!updateOneBooks)
+         return res.status(404).json({ error: 'Borrower not found' });
+         res.status(200).json(updateOneBooks);
+   } catch (err) {
+      console.error(err);
+      res.status(500).json({ error: 'Failed to update single data', details: err.message });
+   }
+}
+
 export async function deleteBook(req, res) {
    const deleteBook = await BookModel.findByIdAndDelete(req.params.id);
    console.log(deleteBook);
